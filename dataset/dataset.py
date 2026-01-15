@@ -509,11 +509,9 @@ class MyDataset(Dataset):
         ]
         label = self.processor.tokenizer.decode(labels, skip_special_tokens=False)
        
-        # 如果是Eval数据，会有answer
         if 'answer' in sources[0]:
             data_dict['answer'] = sources[0]['answer']
 
-        # 均匀地从0.01到0.5，步长为0.01的50个值中随机取一个
         budget_list = [0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95]
         data_dict['budget'] = budget_list[index % len(budget_list)]
         return data_dict
@@ -621,9 +619,9 @@ if __name__ == "__main__":
         video_fps: float = 2
 
     data_args = DataArguments()
-    with open("/mnt/inaisfs/home/test3/jihuawei/workspace/Dynamic-VLM-Single-Node-Qwen/created_datasets/train_downsample_ratio_0.5_combined_short_count.json", "r") as f:
+    with open("xxx/workspace/Dynamic-VLM-Single-Node-Qwen/created_datasets/train_downsample_ratio_0.5_combined_short_count.json", "r") as f:
         data = json.load(f)
-    processor = AutoProcessor.from_pretrained("/mnt/inaisfs/home/test3/jihuawei/pretrained_weights/Qwen/Qwen2.5-VL-7B-Instruct")
+    processor = AutoProcessor.from_pretrained("xxx/pretrained_weights/Qwen/Qwen2.5-VL-7B-Instruct")
     dataset = MyDataset(data, processor, data_args)
     dataloader = DataLoader(
         dataset,

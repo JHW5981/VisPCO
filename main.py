@@ -33,16 +33,16 @@ def get_args_parser():
     
     # Model Parameters
     parser.add_argument("--model_name", default='qwen2.5vl-3b', type=str, metavar='MODEL', help="Name of model to use")
-    parser.add_argument("--resource_model_path", default='/mnt/inaisfs/home/test3/jihuawei/workspace/Qwen-Fastv-VisPCO/resource_network_weights/macs_model.pth', type=str, metavar='RESOURCE_MODEL_PATH', help="Path to resource model")
+    parser.add_argument("--resource_model_path", default='xxx/workspace/Qwen-Fastv-VisPCO/resource_network_weights/macs_model.pth', type=str, metavar='RESOURCE_MODEL_PATH', help="Path to resource model")
 
     # Dataset Parameters
-    parser.add_argument('--trdata_path', default='/mnt/inaisfs/home/test3/jihuawei/workspace/Qwen-Fastv-VisPCO/train_10_uniform_area_single_image.json', type=str, metavar='TRDATA', help="Path to training data")
-    parser.add_argument('--valdata_path', default='/mnt/inaisfs/home/test3/jihuawei/workspace/Qwen-Fastv-VisPCO/eval_max_5_dataset.json', type=str, metavar='VALDATA', help="Path to validation data")
+    parser.add_argument('--trdata_path', default='xxx/workspace/Qwen-Fastv-VisPCO/train_10_uniform_area_single_image.json', type=str, metavar='TRDATA', help="Path to training data")
+    parser.add_argument('--valdata_path', default='xxx/workspace/Qwen-Fastv-VisPCO/eval_max_5_dataset.json', type=str, metavar='VALDATA', help="Path to validation data")
     parser.add_argument('--batch_size', default=2, type=int, metavar='BATCH_SIZE', help="Batch size (default: 16)")
     parser.add_argument('--num_workers', default=4, type=int, metavar='NUM_WORKERS', help="Number of workers (default: 16)")
     parser.add_argument('--pin_memory', action='store_true', help="Pin memory (default: False)")
     parser.add_argument('--seed', default=42, type=int, metavar='SEED', help="Random seed (default: 42)")
-    # Qwen数据的一些限制
+    # Some restrictions on Qwen dataset
     parser.add_argument('--max_pixels', default=4194304, type=int, metavar='MAX_PIXELS', help="Max pixels (default: 28 * 28 * 576)")
     parser.add_argument('--min_pixels', default=400, type=int, metavar='MIN_PIXELS', help="Min pixels (default: 28 * 28 * 16)")
     parser.add_argument('--video_max_frames', default=8, type=int, metavar='VIDEO_MAX_FRAMES', help="Video max frames (default: 8)")
@@ -72,7 +72,7 @@ def get_args_parser():
     parser.add_argument('--max_norm', type=float, default=None, metavar='NORM',
                         help='Clip gradient norm (default: None, no clipping)')
 
-    # 拉格朗日乘子法的训练参数
+    # Training parameters for Lagrangian multiplier method
     parser.add_argument("--w", default=1, type=float)
     parser.add_argument("--sigma", default=100, type=float)
     parser.add_argument("--alpha", default=2, type=float)
@@ -85,15 +85,15 @@ def get_args_parser():
     parser.add_argument('--precision', default='bf16', type=str, metavar='PRECISION', help="Precision (default: fp32)")
     parser.add_argument('--update_freq', default=1, type=int, metavar='UPDATE_FREQ', help="Update frequency (default: 1)")
     parser.add_argument('--patience', default=3, type=int)
-    parser.add_argument('--log_dir', default='/mnt/inaisfs/home/test3/jihuawei/workspace/Qwen-Fastv-VisPCO/train_logs/debug/', type=str, metavar='LOG_DIR', help="Path to save logs (default: logs)")
+    parser.add_argument('--log_dir', default='xxx/workspace/Qwen-Fastv-VisPCO/train_logs/debug/', type=str, metavar='LOG_DIR', help="Path to save logs (default: logs)")
     parser.add_argument('--log_file', default='log.txt', type=str)
-    parser.add_argument('--save_ckpt_path', default='/mnt/inaisfs/home/test3/jihuawei/workspace/Qwen-Fastv-VisPCO/outputs', type=str, metavar='SAVE_CKPT_PATH', help="Path to save checkpoint, empty for no saving (default: output)")
+    parser.add_argument('--save_ckpt_path', default='xxx/workspace/Qwen-Fastv-VisPCO/outputs', type=str, metavar='SAVE_CKPT_PATH', help="Path to save checkpoint, empty for no saving (default: output)")
     parser.add_argument('--save_ckpt_freq', default=1, type=int, metavar='SAVE_CKPT_FREQ', help="Save checkpoint frequency (default: 1)")
     parser.add_argument('--save_ckpt_num', default=3, type=int, metavar='SAVE_CKPT_NUM', help="Number of checkpoints to save (default: 3)")
     parser.add_argument('--finetuning', action='store_true', help="Finetuning (default: False)")
 
     # Evaluation Parameters
-    parser.add_argument('--eval', default=1, type=int, help="隔几次eval一次")
+    parser.add_argument('--eval', default=1, type=int, help="Evaluate every K epochs")
     parser.add_argument('--disable_eval', action='store_true', 
                         help="Disable evaluation during training (default: False)")
 
@@ -107,23 +107,23 @@ def get_args_parser():
     return parser
 
 def main(args):
-    # 配置分布式训练
+    # Configure distributed training
     init_distributed_mode(args)
 
-    # 配置随机种子
+    # Set random seed
     seed = args.seed + get_rank()
     seed_everything(seed)
 
-    # 模型加载
+    # Model loading
     model_name = args.model_name
-    # 精度
+    # Precision
     precision_map = {
         "bf16": torch.bfloat16,
         "fp16": torch.float16,
         "fp32": torch.float32,
     }
     if model_name == 'qwen2.5vl-7b':
-        model_path = "/mnt/inaisfs/home/test3/jihuawei/pretrained_weights/Qwen/Qwen2.5-VL-7B-Instruct"
+        model_path = "xxx/pretrained_weights/Qwen/Qwen2.5-VL-7B-Instruct"
         config = Qwen2_5_VLConfig.from_pretrained(model_path)
         config.finetuning = args.finetuning
         model = Qwen2_5_VLForConditionalGeneration_FastV.from_pretrained(
@@ -137,11 +137,11 @@ def main(args):
             # ignore_mismatched_sizes=True
         )    
 
-        # 单独对student模型的predict_pruning_ratio进行初始化，不然就跑飞了
+        # Initialize student model's predict_pruning_ratio separately to avoid errors
         model.model.language_model.predict_pruning_ratio.apply(init_weights)
-        print(f"✅ {model_name}已经导入完成！✅")
+        print(f"✅ {model_name} has been successfully loaded! ✅")
     elif model_name == 'qwen2.5vl-3b':
-        model_path = "/mnt/inaisfs/home/test3/jihuawei/pretrained_weights/Qwen/Qwen2.5-VL-3B-Instruct"
+        model_path = "xxx/pretrained_weights/Qwen/Qwen2.5-VL-3B-Instruct"
         config = Qwen2_5_VLConfig.from_pretrained(model_path)
         config.finetuning = args.finetuning
         model = Qwen2_5_VLForConditionalGeneration_FastV.from_pretrained(
@@ -155,11 +155,11 @@ def main(args):
             # ignore_mismatched_sizes=True
         )    
 
-        # 单独对student模型的predict_pruning_ratio进行初始化，不然就跑飞了
+        # Initialize student model's predict_pruning_ratio separately to avoid errors
         model.model.language_model.predict_pruning_ratio.apply(init_weights)
-        print(f"✅ {model_name}已经导入完成！✅")
+        print(f"✅ {model_name} has been successfully loaded! ✅")
     else:
-        raise ValueError(f"⚠️ 模型 {model_name} 暂不支持 ⚠️")
+        raise ValueError(f"⚠️ Model {model_name} is not supported ⚠️")
 
     model.eval()
     teacher_model.eval()
@@ -168,7 +168,7 @@ def main(args):
     teacher_model = teacher_model.to(precision_map[args.precision])
     teacher_model = teacher_model.to(args.device)
 
-    # 再次确保所有参数都在正确的设备上
+    # Double check if every parameter is on the right device
     for name, param in model.named_parameters():
         if param.device.type == 'cpu':
             print(f"Warning: {name} is still on CPU!")
@@ -179,7 +179,7 @@ def main(args):
             print(f"Warning: buffer {name} is still on CPU!")
             buf.data = buf.data.to(args.device)
 
-    # 解冻predictor
+    # Unfreeze predictor parameters
     for name, param in model.named_parameters():
         if 'predict_pruning_ratio' in name:
             param.requires_grad = True
@@ -188,11 +188,11 @@ def main(args):
     n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad) / 1e9
     print(f'Number of Trainable params:{n_parameters:.1f}B')
 
-    # 冻结teacher model的所有参数
+    # Freeze all parameters in teacher model
     for param in teacher_model.parameters():
         param.requires_grad = False
 
-    # 数据集加载
+    # Load dataset
     processor = AutoProcessor.from_pretrained(model_path)
     dataset_train, _ = build_dataset(is_train=True, args=args, processor=processor)
     dataset_eval_lists, dataset_eval_names = build_dataset(is_train=False, args=args, processor=processor)
@@ -200,7 +200,7 @@ def main(args):
     num_tasks = get_world_size()
     global_rank = get_rank()
 
-    # 根据是否分布式选择不同的采样器
+    # Choose sampler based on distributed or not
     if args.distributed:
         sampler_train = torch.utils.data.DistributedSampler(dataset_train, num_replicas=num_tasks, rank=global_rank, shuffle=True, seed=args.seed)
         if dataset_eval_lists is not None:
@@ -218,7 +218,7 @@ def main(args):
         num_workers=args.num_workers,
         pin_memory=args.pin_memory,
         drop_last=True,
-        shuffle=(sampler_train is None),  # 只在非分布式时使用shuffle
+        shuffle=(sampler_train is None),  # Use shuffle only in non-distributed mode
         collate_fn=DataCollatorForSupervisedDataset(tokenizer=processor.tokenizer),
     )
     eval_dataloader_lists = []
@@ -228,7 +228,7 @@ def main(args):
                 torch.utils.data.DataLoader(
                             dataset_eval,
                             sampler=sampler_eval,
-                            batch_size=1, # 为了保证准确evaluation的batch用1
+                            batch_size=1, # Batch size 1 for precise evaluation
                             num_workers=args.num_workers,
                             pin_memory=args.pin_memory,
                             drop_last=False,
@@ -240,7 +240,7 @@ def main(args):
             eval_dataloader_lists.append(
                 torch.utils.data.DataLoader(
                             dataset_eval,
-                            batch_size=1, # 为了保证准确evaluation的batch用1
+                            batch_size=1, # Batch size 1 for precise evaluation
                             num_workers=args.num_workers,
                             pin_memory=args.pin_memory,
                             drop_last=False,
@@ -249,7 +249,7 @@ def main(args):
                 )
             )
 
-    # 日志记录
+    # Logging
     if global_rank == 0 and args.log_dir is not None:
         os.makedirs(args.log_dir, exist_ok=True)
         logger_writer = MyLogger(log_dir=args.log_dir)
@@ -260,7 +260,7 @@ def main(args):
     metric_logger.add_meter('lr', SmoothedValue(window_size=1, fmt='{value:.6f}'))
     metric_logger.add_meter('min_lr', SmoothedValue(window_size=1, fmt='{value:.6f}'))
 
-    # 训练参数
+    # Training stats
     total_batch_size = args.batch_size * args.update_freq * get_world_size()
     num_training_steps_per_epoch = len(dataset_train) // total_batch_size
     print("LR = %.8f" % args.lr)
@@ -269,14 +269,14 @@ def main(args):
     print("Number of training examples = %d" % len(dataset_train))
     print("Number of training steps per epoch = %d" % num_training_steps_per_epoch)
     
-    # 创建优化器
+    # Create optimizer
     optimizer = create_optimizer(args, model, skip_list=[], bone_lr_scale=args.lr_scale, fix_step=args.fix_step)
-    # 学习率调度器
+    # LR scheduler
     lr_schedule_values = cosine_scheduler(args.lr, args.min_lr, args.epochs, num_training_steps_per_epoch, warmup_steps=args.warmup_steps)
-    # 创建损失函数
+    # Create loss function
     criterion = create_criterion(teacher_model, model, args)
 
-    # 第一次测试，并且用于初始化拉格朗日乘子
+    # First evaluation and initialize Lagrangian multiplier
     sub_flops = []
     test_stats = evaluate(eval_dataloader_lists, dataset_eval_names, model, processor, args)
     flop_loss = test_stats.pop('flop_loss')
@@ -299,7 +299,7 @@ def main(args):
         print(f"{k:>16} : {v}")
     print("=" * 50)
 
-    print(f"初始的w: {args.w}, 初始的sigma: {args.sigma}")
+    print(f"Initial w: {args.w}, Initial sigma: {args.sigma}")
 
     print("Start training for %d epochs" % args.epochs)
     start_time = time.time()
@@ -318,7 +318,7 @@ def main(args):
                         'epoch': epoch,
                         'n_parameters': n_parameters}
         
-        # 用测试集上的loss代替
+        # Use loss on validation set instead
         test_stats = evaluate(eval_dataloader_lists, dataset_eval_names, model, processor, args)
         flop_loss = test_stats.pop('flop_loss')
         sub_flops.append(flop_loss)
@@ -340,7 +340,7 @@ def main(args):
             print(f"{k:>16} : {v}")
         print("=" * 50)
 
-        # 更新拉格朗日乘子
+        # Update Lagrangian multipliers
         # if abs(sub_flops[-1]) < args.epsilon:
         if len(sub_flops) > 4 and abs(sub_flops[-1]) < args.epsilon and abs(sub_flops[-2]) < args.epsilon and abs(sub_flops[-3]) < args.epsilon:
             if is_main_process():
@@ -356,17 +356,17 @@ def main(args):
         args.w = args.w - args.sigma * (sub_flops[-1])
 
         if args.distributed:
-            # 同步args.w和args.sigma到各个进程（取主进程的为准）
+            # Synchronize args.w and args.sigma to all processes (use value from main process)
             w_tensor = torch.tensor([args.w], dtype=torch.float32, device=args.device)
             sigma_tensor = torch.tensor([args.sigma], dtype=torch.float32, device=args.device)
             torch.distributed.broadcast(w_tensor, src=0)
             torch.distributed.broadcast(sigma_tensor, src=0)
             args.w = w_tensor.item()
             args.sigma = sigma_tensor.item()
-        # 更新criterion
+        # Update criterion
         criterion.w = args.w
         criterion.sigma = args.sigma
-        print(f"更新后的w: {args.w}, 更新后的sigma: {args.sigma}")
+        print(f"Updated w: {args.w}, Updated sigma: {args.sigma}")
         
 
         if args.log_dir is not None and is_main_process():

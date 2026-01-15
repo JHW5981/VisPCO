@@ -72,9 +72,9 @@ Once the data is ready, you can start training.
 
 Simply launch multi-GPU distributed training with:
 ```bash
-bash run_gpu05.sh
+bash run_training.sh
 ```
-> **Note:** By default, the `run_gpu05.sh` script uses `torchrun` to train the main model with 8 GPUs in parallel. You can modify GPU assignment or adjust training hyperparameters (such as batch size, learning rate, etc.) in the script to suit your environment.
+> **Note:** By default, the `run_training.sh` script uses `torchrun` to train the main model with 8 GPUs in parallel. You can modify GPU assignment or adjust training hyperparameters (such as batch size, learning rate, etc.) in the script to suit your environment.
 
 ## 🧪 Evaluation
 Once the training is complete, you can evaluate the model performance.

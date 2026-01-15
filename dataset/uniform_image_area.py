@@ -4,6 +4,7 @@ from tqdm import tqdm
 import json
 import os
 from pathlib import Path
+import argparse
 
 # Target area range
 TARGET_MIN_AREA = 400
@@ -162,10 +163,25 @@ def resize_and_update_json(
 
     return data
 
-# Example usage:
-# resize_and_update_json(
-#     json_input_path="xxx/workspace/Dynamic-VLM-Single-Node-Qwen/created_datasets/downsample_ratio_0.3_dataset.json",
-#     output_base_dir="xxx/pretraining_data/resize_dataset",
-#     json_output_path="xxx/workspace/Dynamic-VLM-Single-Node-Qwen/created_datasets/downsample_ratio_0.3_dataset_resized.json"
-# )
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Uniformly resize images in a dataset JSON with controlled area range.")
+    parser.add_argument("--json_input_path", type=str, required=True,
+                        help="Path to the input JSON file.")
+    parser.add_argument("--output_base_dir", type=str, required=True,
+                        help="Directory to save resized images.")
+    parser.add_argument("--json_output_path", type=str, default=None,
+                        help="Path to save the updated JSON file (optional).")
+    parser.add_argument("--target_min_area", type=int, default=TARGET_MIN_AREA,
+                        help=f"Minimum area for resizing (default {TARGET_MIN_AREA}).")
+    parser.add_argument("--target_max_area", type=int, default=TARGET_MAX_AREA,
+                        help=f"Maximum area for resizing (default {TARGET_MAX_AREA}).")
 
+    args = parser.parse_args()
+
+    resize_and_update_json(
+        json_input_path=args.json_input_path,
+        output_base_dir=args.output_base_dir,
+        json_output_path=args.json_output_path,
+        target_min_area=args.target_min_area,
+        target_max_area=args.target_max_area
+    )

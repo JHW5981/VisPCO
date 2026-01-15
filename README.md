@@ -1,6 +1,6 @@
 
 <p align='center'>
-<img src='./assests/Logo.png' alt='mask' width='280px'>
+<img src='assests/Logo.png' alt='mask' width='280px'>
 </p>
 
 --------------------------------------------------------------------------------
@@ -21,7 +21,7 @@
 🔥 **[2026/01/05]** We have submitted our anonymized paper to ACL 2026! Stay tuned for more updates.
 
 <p align='center'>
-<img src='./assests/archi.png' alt='mask' width='700px'>
+<img src='assests/archi.png' alt='mask' width='700px'>
 </p>
 
 ## ✒️ Contents
@@ -38,7 +38,7 @@
 Large-scale vision-language models (LVLMs) excel at cross-modal understanding, but processing high-resolution images or long videos causes a rapid increase in visual tokens and, consequently, computation costs. Visual token pruning methods aim to reduce redundant tokens, but a crucial challenge remains: **under the same computational budget, different pruning configurations can lead to vastly different model performances—sometimes differing by over 20%**. Instead of costly grid searches, **VisPCO** introduces a differentiable, Pareto-optimal approach that learns to automatically select the best pruning configuration given a computation constraint, ensuring optimal efficiency and accuracy. This enables practical and adaptive deployment, making LVLMs more efficient in real-world scenarios.
 
 <div align=center>
-<img width="300" alt="image" src="./assests/moti.png">
+<img width="300" alt="image" src="assests/moti.png">
 </div>
 
 ## 👨‍💻 Preparation

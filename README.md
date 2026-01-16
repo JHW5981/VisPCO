@@ -14,7 +14,6 @@
   <img src="https://img.shields.io/badge/Last_Update-2026--01--15-critical?style=flat" alt="Last Update">
 </p>
 
-
 ## 📜 News 
 🚀 **[2026/01/15]** VisPCO code is now officially open-sourced. Welcome to explore and use it!
 
@@ -31,7 +30,6 @@
 - [Training](#🚀-training)
 - [Evaluation](#🧪-evaluation)
 - [License](#license)
-
 
 ## 👀 Overview
 

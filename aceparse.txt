@@ -1,0 +1,6 @@
+@misc{huawei2026vispco,
+      title={VisPCO: Visual Token Pruning Configuration Optimization via Budget-Aware Pareto-Frontier Learning for Vision-Language Models}, 
+      author={Huawei Ji and Yuanhao Sun and Yuan Jin and Cheng Deng and Jiaxin Ding and Luoyi Fu and Xinbing Wang},
+      year={2026},
+      eprint={2604.},
+}
